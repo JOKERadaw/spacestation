@@ -1,6 +1,8 @@
 <script>
 	import { spring } from 'svelte/motion';
+	import { createEventDispatcher } from 'svelte';
 
+	const dispatch = createEventDispatcher();
 	let count = 0;
 	export let material="None";
 	const displayed_count = spring();
@@ -15,11 +17,19 @@
 		// handle negative numbers
 		return ((n % m) + m) % m;
 	}
+	function quantity() {
+		dispatch('message', {
+			quantity: count
+	});
+	}
 </script>
 
 <div class= fabric> 
 <div class="counter">
-	<button on:click={() => (count -= 1)} aria-label="Decrease the counter by one">
+	<button on:click={() => {
+		count -= 1; // Decrease the count by 1
+		quantity(); // Call the quantity() function
+	}} aria-label="Decrease the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5" />
 		</svg>
@@ -32,7 +42,10 @@
 		</div>
 	</div>
 
-	<button on:click={() => (count += 1)} aria-label="Increase the counter by one">
+	<button on:click={() => {
+		count += 1; // increase the count by 1
+		quantity(); // Call the quantity() function
+	}} aria-label="Increase the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
 		</svg>
